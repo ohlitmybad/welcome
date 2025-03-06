@@ -1,0 +1,8 @@
+{
+  "welcome": {
+    "title": "Welcome to DataMB Pro!",
+    "password_sent": "A password has been sent to your email.",
+    "login_instruction": "To log in, head to",
+    "or_mobile": "or to the Pro section in the mobile application."
+  }
+} 
