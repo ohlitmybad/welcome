@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
+
     <style>
         body {
             background-color: #1a1a1a;
@@ -35,21 +36,91 @@
         a:hover {
             text-decoration: underline;
         }
-.logo img {
-  width: 30px;
-margin-top: 10px;
-  height: 30px;
-opacity: 0.74;
-}
+        .logo img {
+            width: 30px;
+            margin-top: 10px;
+            height: 30px;
+            opacity: 0.74;
+        }
+    
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to DataMB Pro!</h1>
-        <p>A password has been sent to your email.</p>
-        <p>To log in, head to <a href="https://datamb.football/pro" target="_blank">datamb.football/pro</a> or to the Pro section in the mobile application.</p>
+        <h1 data-i18n="welcome.title">Welcome to DataMB Pro!</h1>
+        <p data-i18n="welcome.password_sent">A password has been sent to your email.</p>
+        <p><span data-i18n="welcome.login_instruction">To log in, head to</span> <a href="https://datamb.football/pro" target="_blank">datamb.football/pro</a> <span data-i18n="welcome.or_mobile">or to the Pro section in the mobile application.</span></p>
         <div class="logo">
-        <img src="https://datamb.football/logopro.png" alt="DataMB Pro" />
-    </div>    </div>
+            <img src="https://datamb.football/logopro.png" alt="DataMB Pro" />
+        </div>
+    </div>
+
+  
+<script>
+    // Translation functionality
+    function setLanguage(language) {
+      localStorage.setItem('preferredLanguage', language);
+      // Update URL with language parameter
+      const url = new URL(window.location.href);
+      if (language === 'en') {
+        url.searchParams.delete('lang');
+      } else {
+        url.searchParams.set('lang', language);
+      }
+      window.history.pushState({}, '', url);
+      applyLanguage(language);
+    }
+    
+    function getPreferredLanguage() {
+      // Check URL parameter first
+      const urlParams = new URLSearchParams(window.location.search);
+      const langParam = urlParams.get('lang');
+      if (langParam) {
+        return langParam;
+      }
+      return localStorage.getItem('preferredLanguage') || getBrowserLanguage() || 'en';
+    }
+    
+    function getBrowserLanguage() {
+      return navigator.language.slice(0, 2);
+    }
+    
+    function applyLanguage(language) {
+      fetch(`locales/${language}.json`)
+        .then(response => response.json())
+        .then(translations => {
+          // Update text content for elements with data-i18n attribute
+          document.querySelectorAll('[data-i18n]').forEach(element => {
+            const keys = element.getAttribute('data-i18n').split('.');
+            let value = translations;
+            for (const key of keys) {
+              value = value[key];
+            }
+            if (value) {
+              element.textContent = value;
+            }
+          });
+    
+          // Update placeholders for elements with data-i18n-placeholder attribute
+          document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+            const keys = element.getAttribute('data-i18n-placeholder').split('.');
+            let value = translations;
+            for (const key of keys) {
+              value = value[key];
+            }
+            if (value) {
+              element.placeholder = value;
+            }
+          });
+    
+
+        });
+    }
+    
+    // Initialize translations
+    const preferredLanguage = getPreferredLanguage();
+    applyLanguage(preferredLanguage);
+    
+    </script>
 </body>
 </html>
