@@ -1,0 +1,8 @@
+{
+    "welcome": {
+      "title": "Bienvenue sur DataMB Pro!",
+      "password_sent": "Un mot de passe a été envoyé sur ta boite mail.",
+      "login_instruction": "Pour te connecter, clique sur ce lien",
+      "or_mobile": "ou sur la section Pro de l'application mobile."
+    }
+  } 
